@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Zadanie3
 {
-    public partial class IsPresentForm : Form
+    public partial class IsPresentForm : Form //sprawdzic czemu nie dziala 
     {
         public bool tickEnd = false;
         public IsPresentForm()
@@ -18,17 +18,15 @@ namespace Zadanie3
             InitializeComponent();
             tick = 0;
             this.ControlBox = false; //ukrycie przycisku zamykania okna
-            isPresentLabel.Text = "Wciśnij dowolny klawisz \r\nw celu potwierdzenia \r\nobecności przy stanowisku. \r\n\nW przeciwnym razie, \r\nw przypadku braku \r\naktywności przez " + (30 - tick).ToString() + "\r\nsekund nastąpi wylogowanie \r\nz systemu.";
-            
+            isPresentLabel.Text = String.Empty;
         }
-
-        
 
         private void isPresentTimer_Tick(object sender, EventArgs e)
         {
-            
+            isPresentLabel.Text = "Wciśnij dowolny klawisz \r\nw celu potwierdzenia \r\nobecności przy stanowisku. \r\n\nW przeciwnym razie, \r\nw przypadku braku \r\naktywności przez " + (30 - tick).ToString() + "\r\nsekund nastąpi wylogowanie \r\nz systemu.";
             tick++;
-            if(tick == 30)
+            
+            if (tick == 30)
             {   
                 tickEnd = true;
                 isPresentTimer.Stop();
@@ -41,6 +39,7 @@ namespace Zadanie3
 
         private void IsPresentForm_KeyPress(object sender, KeyPressEventArgs e)
         {
+            keyPressed = true;
             isPresentTimer.Stop();
             MessageBox.Show("Przedłużono sesję użytkownika");
             this.Close();

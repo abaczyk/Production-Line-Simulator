@@ -3,8 +3,8 @@
     partial class IsPresentForm
     {
         LoginForm loginForm = new LoginForm();
-        ProductionLineForm productionLineForm;
         int tick;
+        public bool keyPressed = false;
         /// <summary>
         /// Required designer variable.
         /// </summary>

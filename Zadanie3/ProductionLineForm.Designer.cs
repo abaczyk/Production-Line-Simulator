@@ -8,8 +8,11 @@ namespace Zadanie3
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        
+       
+        IsPresentForm isPresentForm = new IsPresentForm();
+
         private System.ComponentModel.IContainer components = null;
+
         int tick;
         int temp0;
         int temp1;
@@ -18,11 +21,19 @@ namespace Zadanie3
 
         int cpuValue;
         int ramValue;
+
+        int issueNumber;
+
         Random random = new Random();
+
         ArrayList temp0List = new ArrayList();
         ArrayList temp1List = new ArrayList();
         ArrayList temp2List = new ArrayList();
         ArrayList temp3List = new ArrayList();
+
+        private int MAX_NORMAL_VALUE = 50;
+        ArrayList issueList = new ArrayList();
+
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -45,20 +56,19 @@ namespace Zadanie3
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.testTimer = new System.Windows.Forms.Timer(this.components);
-            this.label1 = new System.Windows.Forms.Label();
+            this.productionTimer = new System.Windows.Forms.Timer(this.components);
             this.cpuLabel = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.exitProgramsButton = new System.Windows.Forms.Button();
             this.ramLabel = new System.Windows.Forms.Label();
             this.ramUsage = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.cpuUsage = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
+            this.lowerCore0Button = new System.Windows.Forms.Button();
+            this.lowerCore1Button = new System.Windows.Forms.Button();
+            this.lowerCore2Button = new System.Windows.Forms.Button();
+            this.lowerCore3Button = new System.Windows.Forms.Button();
+            this.randIssue = new System.Windows.Forms.Button();
             this.maxTemp3Label = new System.Windows.Forms.Label();
             this.maxTemp2Label = new System.Windows.Forms.Label();
             this.maxTemp1Label = new System.Windows.Forms.Label();
@@ -78,23 +88,16 @@ namespace Zadanie3
             this.core0Label = new System.Windows.Forms.Label();
             this.maxLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.changeTimer = new System.Windows.Forms.Timer(this.components);
+            this.cpuValueLabel = new System.Windows.Forms.Label();
+            this.ramValueLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // testTimer
+            // productionTimer
             // 
-            this.testTimer.Interval = 1000;
-            this.testTimer.Tick += new System.EventHandler(this.testTimer_Tick);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(585, 15);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
+            this.productionTimer.Interval = 1000;
+            this.productionTimer.Tick += new System.EventHandler(this.testTimer_Tick);
             // 
             // cpuLabel
             // 
@@ -106,15 +109,17 @@ namespace Zadanie3
             this.cpuLabel.TabIndex = 6;
             this.cpuLabel.Text = "Procesor";
             // 
-            // button1
+            // exitProgramsButton
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button1.Location = new System.Drawing.Point(565, 31);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(165, 55);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "Wyłącz niepotrzebne programy";
-            this.button1.UseVisualStyleBackColor = true;
+            this.exitProgramsButton.Enabled = false;
+            this.exitProgramsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.exitProgramsButton.Location = new System.Drawing.Point(565, 31);
+            this.exitProgramsButton.Name = "exitProgramsButton";
+            this.exitProgramsButton.Size = new System.Drawing.Size(165, 55);
+            this.exitProgramsButton.TabIndex = 16;
+            this.exitProgramsButton.Text = "Wyłącz niepotrzebne programy";
+            this.exitProgramsButton.UseVisualStyleBackColor = true;
+            this.exitProgramsButton.Click += new System.EventHandler(this.fixCpuRam_Click);
             // 
             // ramLabel
             // 
@@ -166,55 +171,64 @@ namespace Zadanie3
             this.label6.Size = new System.Drawing.Size(719, 3);
             this.label6.TabIndex = 21;
             // 
-            // button2
+            // lowerCore0Button
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button2.Location = new System.Drawing.Point(565, 202);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(165, 44);
-            this.button2.TabIndex = 22;
-            this.button2.Text = "Zmniejsz użycie rdzenia #0\r\n\r\n ";
-            this.button2.UseVisualStyleBackColor = true;
+            this.lowerCore0Button.Enabled = false;
+            this.lowerCore0Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lowerCore0Button.Location = new System.Drawing.Point(565, 202);
+            this.lowerCore0Button.Name = "lowerCore0Button";
+            this.lowerCore0Button.Size = new System.Drawing.Size(165, 44);
+            this.lowerCore0Button.TabIndex = 22;
+            this.lowerCore0Button.Text = "Zmniejsz użycie rdzenia #0\r\n\r\n ";
+            this.lowerCore0Button.UseVisualStyleBackColor = true;
+            this.lowerCore0Button.Click += new System.EventHandler(this.fixCore0_Click);
             // 
-            // button3
+            // lowerCore1Button
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button3.Location = new System.Drawing.Point(565, 252);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(165, 44);
-            this.button3.TabIndex = 23;
-            this.button3.Text = "Zmniejsz użycie rdzenia #1\r\n\r\n";
-            this.button3.UseVisualStyleBackColor = true;
+            this.lowerCore1Button.Enabled = false;
+            this.lowerCore1Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lowerCore1Button.Location = new System.Drawing.Point(565, 252);
+            this.lowerCore1Button.Name = "lowerCore1Button";
+            this.lowerCore1Button.Size = new System.Drawing.Size(165, 44);
+            this.lowerCore1Button.TabIndex = 23;
+            this.lowerCore1Button.Text = "Zmniejsz użycie rdzenia #1\r\n\r\n";
+            this.lowerCore1Button.UseVisualStyleBackColor = true;
+            this.lowerCore1Button.Click += new System.EventHandler(this.fixCore1_Click);
             // 
-            // button4
+            // lowerCore2Button
             // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button4.Location = new System.Drawing.Point(565, 302);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(165, 44);
-            this.button4.TabIndex = 24;
-            this.button4.Text = "Zmniejsz użycie rdzenia #2\r\n\r\n";
-            this.button4.UseVisualStyleBackColor = true;
+            this.lowerCore2Button.Enabled = false;
+            this.lowerCore2Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lowerCore2Button.Location = new System.Drawing.Point(565, 302);
+            this.lowerCore2Button.Name = "lowerCore2Button";
+            this.lowerCore2Button.Size = new System.Drawing.Size(165, 44);
+            this.lowerCore2Button.TabIndex = 24;
+            this.lowerCore2Button.Text = "Zmniejsz użycie rdzenia #2\r\n\r\n";
+            this.lowerCore2Button.UseVisualStyleBackColor = true;
+            this.lowerCore2Button.Click += new System.EventHandler(this.fixCore2_Click);
             // 
-            // button5
+            // lowerCore3Button
             // 
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button5.Location = new System.Drawing.Point(565, 352);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(165, 44);
-            this.button5.TabIndex = 25;
-            this.button5.Text = "Zmniejsz użycie rdzenia #3\r\n\r\n\r\n";
-            this.button5.UseVisualStyleBackColor = true;
+            this.lowerCore3Button.Enabled = false;
+            this.lowerCore3Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lowerCore3Button.Location = new System.Drawing.Point(565, 352);
+            this.lowerCore3Button.Name = "lowerCore3Button";
+            this.lowerCore3Button.Size = new System.Drawing.Size(165, 44);
+            this.lowerCore3Button.TabIndex = 25;
+            this.lowerCore3Button.Text = "Zmniejsz użycie rdzenia #3\r\n\r\n\r\n";
+            this.lowerCore3Button.UseVisualStyleBackColor = true;
+            this.lowerCore3Button.Click += new System.EventHandler(this.fixCore3_Click);
             // 
-            // button6
+            // randIssue
             // 
-            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button6.Location = new System.Drawing.Point(565, 122);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(165, 55);
-            this.button6.TabIndex = 26;
-            this.button6.Text = "Generuj losową usterkę";
-            this.button6.UseVisualStyleBackColor = true;
+            this.randIssue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.randIssue.Location = new System.Drawing.Point(565, 122);
+            this.randIssue.Name = "randIssue";
+            this.randIssue.Size = new System.Drawing.Size(165, 55);
+            this.randIssue.TabIndex = 26;
+            this.randIssue.Text = "Generuj losową usterkę";
+            this.randIssue.UseVisualStyleBackColor = true;
+            this.randIssue.Click += new System.EventHandler(this.randIssue_Click);
             // 
             // maxTemp3Label
             // 
@@ -433,23 +447,50 @@ namespace Zadanie3
             this.tableLayoutPanel1.Size = new System.Drawing.Size(470, 250);
             this.tableLayoutPanel1.TabIndex = 11;
             // 
+            // changeTimer
+            // 
+            this.changeTimer.Enabled = true;
+            this.changeTimer.Interval = 1000;
+            this.changeTimer.Tick += new System.EventHandler(this.changeTimer_Tick);
+            // 
+            // cpuValueLabel
+            // 
+            this.cpuValueLabel.AutoSize = true;
+            this.cpuValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.cpuValueLabel.Location = new System.Drawing.Point(185, 61);
+            this.cpuValueLabel.Name = "cpuValueLabel";
+            this.cpuValueLabel.Size = new System.Drawing.Size(42, 25);
+            this.cpuValueLabel.TabIndex = 27;
+            this.cpuValueLabel.Text = "[%]";
+            // 
+            // ramValueLabel
+            // 
+            this.ramValueLabel.AutoSize = true;
+            this.ramValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ramValueLabel.Location = new System.Drawing.Point(444, 60);
+            this.ramValueLabel.Name = "ramValueLabel";
+            this.ramValueLabel.Size = new System.Drawing.Size(42, 25);
+            this.ramValueLabel.TabIndex = 28;
+            this.ramValueLabel.Text = "[%]";
+            // 
             // ProductionLineForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(742, 414);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.ramValueLabel);
+            this.Controls.Add(this.cpuValueLabel);
+            this.Controls.Add(this.randIssue);
+            this.Controls.Add(this.lowerCore3Button);
+            this.Controls.Add(this.lowerCore2Button);
+            this.Controls.Add(this.lowerCore1Button);
+            this.Controls.Add(this.lowerCore0Button);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.cpuUsage);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.exitProgramsButton);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.cpuLabel);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.ramUsage);
             this.Controls.Add(this.ramLabel);
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -468,20 +509,19 @@ namespace Zadanie3
 
         #endregion
 
-        private System.Windows.Forms.Timer testTimer;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer productionTimer;
         private System.Windows.Forms.Label cpuLabel;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button exitProgramsButton;
         private System.Windows.Forms.Label ramLabel;
         private System.Windows.Forms.Label ramUsage;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label cpuUsage;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button lowerCore0Button;
+        private System.Windows.Forms.Button lowerCore1Button;
+        private System.Windows.Forms.Button lowerCore2Button;
+        private System.Windows.Forms.Button lowerCore3Button;
+        private System.Windows.Forms.Button randIssue;
         private System.Windows.Forms.Label maxTemp3Label;
         private System.Windows.Forms.Label maxTemp2Label;
         private System.Windows.Forms.Label maxTemp1Label;
@@ -501,5 +541,8 @@ namespace Zadanie3
         private System.Windows.Forms.Label core0Label;
         private System.Windows.Forms.Label maxLabel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Timer changeTimer;
+        private System.Windows.Forms.Label cpuValueLabel;
+        private System.Windows.Forms.Label ramValueLabel;
     }
 }
